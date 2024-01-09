@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.List;
 
-@Service
 public interface HospitalService {
 
     public List<HashMap<String, Object>> getAllAdmittedPatients();
