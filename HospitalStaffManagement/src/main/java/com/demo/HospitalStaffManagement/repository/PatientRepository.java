@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
-@Repository
 public interface PatientRepository extends CrudRepository<Patient, Integer> {
 
     List<Patient> findAllByPatientStatus(PatientStatus status);
