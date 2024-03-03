@@ -1,2 +1,2 @@
 # Java_Projects
-Projects made using Java Language
+Hospital Management APIs
