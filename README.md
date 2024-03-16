@@ -1,2 +1,2 @@
 # Java_Projects
-Hospital Management APIs
+Java Standalone Projects
