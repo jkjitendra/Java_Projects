@@ -103,13 +103,7 @@ public class IntermediateOperations {
 
         System.out.println();
 
-        // 10. distinct():- Removes duplicates from a stream.
-        Stream<String> fruits = Stream.of("Apple ", "Banana ", "Apple ", "Cherry ", "Banana ");
-        fruits.distinct().forEach(System.out::print);  // Outputs: Apple Banana Cherry
-
-        System.out.println();
-
-        // 11. flatMapToInt(Function<? super T, ? extends IntStream> mapper):- Converts complex structures into a flat IntStream
+        // 10. flatMapToInt(Function<? super T, ? extends IntStream> mapper):- Converts complex structures into a flat IntStream
         List<List<Integer>> listOfLisOfIntegers = Arrays.asList(Arrays.asList(1, 2), Arrays.asList(3, 4, 5));
         IntStream intFlatStream = listOfLisOfIntegers.stream()
                                                      .flatMapToInt(subList -> subList.stream().mapToInt(Integer::intValue));
@@ -117,7 +111,7 @@ public class IntermediateOperations {
 
         System.out.println();
 
-        // 12. flatMapToLong(Function<? super T, ? extends LongStream> mapper):- Flattens a stream of collections into a LongStream.
+        // 11. flatMapToLong(Function<? super T, ? extends LongStream> mapper):- Flattens a stream of collections into a LongStream.
         List<List<Long>> listOfListOfLong = Arrays.asList(Arrays.asList(2L, 8L, 4L), Arrays.asList(19L, 3L, 7L));
         LongStream longFlatStream = listOfListOfLong.stream()
                                                     .flatMapToLong(subList -> subList.stream().mapToLong(Long::longValue));
@@ -125,7 +119,7 @@ public class IntermediateOperations {
 
         System.out.println();
 
-        // 13. flatMapToDouble(Function<? super T, ? extends DoubleStream> mapper):- Converts collections into a DoubleStream for floating-point operations.
+        // 12. flatMapToDouble(Function<? super T, ? extends DoubleStream> mapper):- Converts collections into a DoubleStream for floating-point operations.
         List<List<Double>> listOfListOfDouble = Arrays.asList(Arrays.asList(2.7, 3.9, 4.6), Arrays.asList(1.3, 5.3, 7.0));
         // Using Stream flatMapToDouble(Function mapper)
         DoubleStream doubleStream = listOfListOfDouble.stream()
@@ -134,35 +128,35 @@ public class IntermediateOperations {
 
         System.out.println();
 
-        // 14. mapToInt(ToIntFunction<? super T> mapper):- Maps objects to an IntStream
+        // 13. mapToInt(ToIntFunction<? super T> mapper):- Maps objects to an IntStream
         Stream<String> stringStreamForInt = Stream.of("hello", "world", "Bye");
         IntStream lengthsOfEachStringInInteger = stringStreamForInt.mapToInt(String::length);
         lengthsOfEachStringInInteger.forEach(System.out::print);  // Outputs: 553
 
         System.out.println();
 
-        // 15. mapToLong(ToLongFunction<? super T> mapper):- Maps objects to a LongStream
+        // 14. mapToLong(ToLongFunction<? super T> mapper):- Maps objects to a LongStream
         Stream<String> stringStreamForLong = Stream.of("a", "ccc", "bb");
         LongStream lengthsOfEachStringInLong = stringStreamForLong.mapToLong(String::length);
         lengthsOfEachStringInLong.forEach(System.out::print);  // Outputs: 132
 
         System.out.println();
 
-        // 16. mapToDouble(ToDoubleFunction<? super T> mapper):- Maps objects to a DoubleStream.
+        // 15. mapToDouble(ToDoubleFunction<? super T> mapper):- Maps objects to a DoubleStream.
         Stream<String> stringStreamForDouble = Stream.of("a", "ccc", "bb");
         DoubleStream lengthsOfEachStringInDouble = stringStreamForDouble.mapToDouble(String::length);
         lengthsOfEachStringInDouble.forEach(System.out::println);  // Outputs: 1.0 3.0 2.0
 
         System.out.println();
 
-        // 17. onClose(Runnable closeHandler):- Adds a close handler to the stream.
+        // 16. onClose(Runnable closeHandler):- Adds a close handler to the stream.
         Stream<String> stream = Stream.of("cleanup", "stream").onClose(() -> System.out.println("\nStream closed"));
         stream.forEach(System.out::print);
         stream.close();  // Outputs: "cleanup stream Stream closed"
 
         System.out.println();
 
-        // 18. unordered():- Hints that the order of elements does not matter.
+        // 17. unordered():- Hints that the order of elements does not matter.
         Stream<String> stringStream = Stream.of("hello", "world", "I", "am", "here").unordered();
         stringStream.forEach(System.out::print);  // Outputs:- helloworldIamhere   // Note:- Order may vary, typically it's the same because of the source
 
