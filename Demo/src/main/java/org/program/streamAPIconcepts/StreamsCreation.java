@@ -10,6 +10,14 @@ import java.util.stream.*;
 
 public class StreamsCreation {
 
+    //    Streams have intermediate and terminal operations which we can use as per our requirement. Here’s a list of Operations:
+    //    Streams doesn’t store the data. You can’t add or remove elements from streams. Hence, they are not the data structures. They are the just operations on data.
+    //    Stream consumes a source, performs operations on it and produces the result. Source may be a collection or an array or an I/O resource. Remember, stream doesn’t modify the source.
+    //    Most of the stream operations return another new stream, and they can be chained together to form a pipeline of operations.
+
+    //    1. Intermediate Operations: peek, flatMap, limit, sort, distinct, map, filter etc.
+    //    2. Terminal Operations: noneMatch, allMatch, collect, findAny, findFirst, anyMatch, toArray, reduce, min, max, forEach, collect, count etc.
+
     public static void main(String[] args) {
         // Creating Streams from Collections
         List<String> list = Arrays.asList("Apple", "Banana", "Cherry", "Date");
@@ -58,7 +66,7 @@ public class StreamsCreation {
         // Collectors.joining
         IntStream rangeStream1 = IntStream.range(1, 5);
         String result = rangeStream1.mapToObj(String::valueOf)
-                .collect(Collectors.joining(", "));
+                                    .collect(Collectors.joining(", "));
         System.out.println(result); // Outputs: 1, 2, 3, 4
 
         // or StringBuilder
