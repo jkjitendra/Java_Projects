@@ -1,6 +1,7 @@
 package org.program.streamAPIconcepts;
 
 import java.util.Arrays;
+import java.util.IntSummaryStatistics;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -84,49 +85,99 @@ public class TerminalOperations {
         System.out.print(evenNumbers); // Outputs "[6, 4]"
 
         System.out.println();
-        
+
         // 10. min(Comparator<? super T> comparator):- Returns the minimum element of the stream according to the provided Comparator. This is a special case of reduction.
+        List<Integer> numbersMinComparator = Arrays.asList(11, 10, 6, 14, 25, 17);
+        Optional<Integer> minNumber = numbersMinComparator.stream().min(Integer::compare);
+        minNumber.ifPresent(System.out::print); // Outputs the minimum element, "6"
+
+        System.out.println();
+
+        List<String> numbersMinComparatorList = Arrays.asList("abc", "ab", "c", "abd", "efc", "dfg");
+        Optional<String> minElement = numbersMinComparatorList.stream().min(String::compareTo);
+        minElement.ifPresent(System.out::print); // Outputs: "ab" lexicographically
+
+        System.out.println();
+
+        Optional<String> minElementByLength = numbersMinComparatorList.stream()
+                .min((a, b) -> Integer.compare(a.length(), b.length())); // Compare by length
+        minElementByLength.ifPresent(System.out::print); // Outputs: "c" the shortest by length
+
+        System.out.println();
+
         // 11. max(Comparator<? super T> comparator):- Returns the maximum element of the stream according to the provided Comparator.
+        List<Integer> numbersMaxComparator = Arrays.asList(11, 10, 6, 14, 25, 17);
+        Optional<Integer> maxNumber = numbersMaxComparator.stream()
+                .max(Integer::compare);
+        maxNumber.ifPresent(System.out::print); // Outputs the maximum element, "25"
+
+        System.out.println();
+
         // 12. count():- Returns the count of elements in the stream. This is a special case of reduction resulting in the number of elements in the stream.
+        List<Integer> integerList = Arrays.asList(11, 10, 6, 14, 25, 17);
+        long count = integerList.stream().count();
+        System.out.print(count); // Outputs: total elements "6"
+
+        System.out.println();
+
         // 13. anyMatch(Predicate<? super T> predicate):- Returns true if any elements of the stream match the provided predicate. Otherwise, it returns false.
+        List<Integer> integerListDivisibleBy5 = Arrays.asList(11, 10, 6, 14, 25, 17);
+        boolean hasDivisibleBy5 = integerListDivisibleBy5.stream().anyMatch(n -> n % 5 == 0);
+        System.out.print(hasDivisibleBy5); // Outputs "true" as 10 is divisible by 5
+
+        System.out.println();
+
+        List<Integer> integerListDivisibleBy8 = Arrays.asList(11, 10, 6, 14, 25, 17);
+        boolean hasDivisibleBy8 = integerListDivisibleBy8.stream().anyMatch(n -> n % 8 == 0);
+        System.out.print(hasDivisibleBy8); // Outputs "false"
+
+        System.out.println();
+
         // 14. allMatch(Predicate<? super T> predicate):- Returns true if all elements of the stream match the provided predicate. Otherwise, it returns false.
+        List<Integer> integerListAllDivisibleBy2 = Arrays.asList(11, 10, 6, 14, 25, 17);
+        boolean allEven = integerListAllDivisibleBy2.stream()
+                .allMatch(n -> n % 2 == 0);
+        System.out.print(allEven); // Outputs "false"
+
+        System.out.println();
+
         // 15. noneMatch(Predicate<? super T> predicate):- Returns true if no elements of the stream match the provided predicate. Otherwise, it returns false.
+        List<Integer> integerListGreaterThan15 = Arrays.asList(11, 16, 6, 14, 5, 7);
+        boolean noneMatch = integerListGreaterThan15.stream()
+                .noneMatch(n -> n > 15);
+        System.out.print(noneMatch); // Outputs "false"
+
+        System.out.println();
+
         // 16. findFirst():- Returns an Optional describing the first element of the stream, or an empty Optional if the stream is empty. This is typically used in conjunction with other stream operations.
+        List<Integer> integerListFirstElement = Arrays.asList(11, 16, 6, 14, 5, 7);
+        Optional<Integer> first = integerListFirstElement.stream().findFirst();
+        first.ifPresent(System.out::print); // Outputs "11"
+
+        System.out.println();
+
         // 17. findAny():- Returns an Optional describing some element of the stream, or an empty Optional if the stream is empty. This is useful in parallel streams where the first found element is returned.
+        List<Integer> integerListAnyElement = Arrays.asList(16, 11, 6, 14, 5, 7);
+        Optional<Integer> any = integerListAnyElement.stream().findAny();
+        any.ifPresent(System.out::print); // Could output any element, often outputs "16"
+
+        System.out.println();
+
         // 18. summaryStatistics() (for IntStream, LongStream, DoubleStream):- Collects statistics, such as count, min, max, sum, and average, about the elements of the stream.
+        List<String> integerListStatistics = Arrays.asList("16", "11", "6", "14", "5", "7");
+        IntSummaryStatistics stats = integerListStatistics.stream()
+                .mapToInt(Integer::parseInt) // // This is actually redundant in this specific case since the list is already of type Integer
+                .summaryStatistics();
 
+        // Printing out the max, min, and average
+        System.out.print("Max: " + stats.getMax() +
+                ", Min: " + stats.getMin() +
+                ", Average: " + stats.getAverage() +
+                ", Sum: " + stats.getSum() +
+                ", Count: " + stats.getCount());
+        // Outputs: Max: 16, Min: 5, Average: 9.833333333333334, Sum: 59, Count: 6
 
+        System.out.println();
 
-        // 2. collect(Collector<T, A, R>):- Transforms the elements of the stream into a different kind of result
-        // e.g., a list, a map, or even an integer
-
-//        List<String> collectedWords = words.stream()
-//                .collect(Collectors.toList());
-
-
-        // 3. reduce(BinaryOperator<T>):- Combines the elements of the stream into a single result
-
-
-        // 4. count():- Returns the count of elements in the stream
-
-        // 5. anyMatch(Predicate<T>):- Returns true if any elements of the stream match the provided predicate, else false
-
-        // 6. allMatch(Predicate<T>):- Returns true if all elements of the stream match the provided predicate, else false
-
-        // 7. noneMatch(Predicate<T>):- Returns true if no elements of the stream match the provided predicate, else false.
-
-        // 8. findFirst():- Returns an Optional describing the first element of the stream, or an empty Optional if the
-        // stream is empty. Useful in parallel streams where the first found element might be returned
-
-        // 9. findAny():- Returns an Optional describing some element of the stream, or an empty Optional if the
-        // stream is empty. This is useful in parallel streams for performance, returning any element that
-        // satisfies the stream constraints
-
-
-        // 10. max(Comparator<T>) and min(Comparator<T>):- Returns the maximum or minimum element of the stream
-        // according to a given comparator.
-
-
-        // 11.
     }
 }
