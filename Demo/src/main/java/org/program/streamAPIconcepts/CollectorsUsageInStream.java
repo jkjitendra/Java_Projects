@@ -74,5 +74,77 @@ public class CollectorsUsageInStream {
                 System.out.print(formattedString); // Outputs: (1, 2, 3, 4, 5)
 
                 System.out.println();
+
+        //  Collectors for Summarizing Elements
+            //  summingInt(ToIntFunction<? super T> mapper): Produces the sum of a transformed int-valued function applied to the elements.
+                // Calculating total age from a list of persons
+                class Person {
+                    String name;
+                    int age;
+
+                    Person(String name, int age) {
+                        this.name = name;
+                        this.age = age;
+                    }
+                }
+
+                List<Person> people = Arrays.asList(new Person("Alice", 24), new Person("Bob", 30), new Person("Charlie", 22));
+                int totalAge = people.stream().collect(Collectors.summingInt(person -> person.age));
+                System.out.print("Total Age: " + totalAge); // Outputs: Total Age: 76
+
+                System.out.println();
+
+                // Summing up lengths of words.
+                List<String> wordsForSumming = Arrays.asList("hello", "world", "java", "stream");
+                int totalLength = wordsForSumming.stream().collect(Collectors.summingInt(String::length));
+                System.out.print("Total Length of Words: " + totalLength); // Outputs: Total Length of Words: 20
+
+                System.out.println();
+
+            //  summingLong(ToLongFunction<? super T> mapper): Similar to summingInt, but for long values
+                // Summing long values representing file sizes.
+                List<Long> fileSizes = Arrays.asList(1024L, 2048L, 512L);
+                long totalSize = fileSizes.stream().collect(Collectors.summingLong(Long::longValue));
+                System.out.print("Total File Size: " + totalSize + " bytes"); // Outputs: Total File Size: 3584 bytes
+
+                System.out.println();
+
+                // Calculating total milliseconds from a list of events.
+                class Event {
+                    long duration;
+
+                    Event(long duration) {
+                        this.duration = duration;
+                    }
+                }
+
+                List<Event> events = Arrays.asList(new Event(100), new Event(500), new Event(300));
+                long totalDuration = events.stream().collect(Collectors.summingLong(event -> event.duration));
+                System.out.print("Total Event Duration: " + totalDuration + " ms"); // Outputs: Total Event Duration: 900 ms
+
+                System.out.println();
+
+            //  summingDouble(ToDoubleFunction<? super T> mapper): Similar to summingInt, but for double values.
+                // Summing up scores from a list of doubles.
+                List<Double> scores = Arrays.asList(95.5, 82.3, 90.4);
+                double totalScores = scores.stream().collect(Collectors.summingDouble(Double::doubleValue));
+                System.out.print("Total Scores: " + totalScores); // Outputs: Total Scores: 268.2
+
+                System.out.println();
+
+                // Calculating total weight from a list of products.
+                class Product {
+                    double weight;
+
+                    Product(double weight) {
+                        this.weight = weight;
+                    }
+                }
+
+                List<Product> products = Arrays.asList(new Product(4.5), new Product(3.2), new Product(1.8));
+                double totalWeight = products.stream().collect(Collectors.summingDouble(product -> product.weight));
+                System.out.print("Total Weight: " + totalWeight + " kg"); // Outputs: Total Weight: 9.5 kg
+
+                System.out.println();
     }
 }
