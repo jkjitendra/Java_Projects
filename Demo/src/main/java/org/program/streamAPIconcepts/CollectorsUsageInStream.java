@@ -167,5 +167,24 @@ public class CollectorsUsageInStream {
                 System.out.print("Average File Size: " + averageFileSize + " bytes"); // Outputs: Average File Size: 1194.6666666666667 bytes
 
                 System.out.println();
+
+                // Average duration of events.
+                double averageEventDuration = events.stream().collect(Collectors.averagingLong(event -> event.duration));
+                System.out.print("Average Event Duration: " + averageEventDuration + " ms"); // Outputs: Average Event Duration: 300.0 ms
+
+                System.out.println();
+
+            //  averagingDouble(ToDoubleFunction<? super T> mapper): Computes the average for double values.
+                // Average score calculation
+                double averageScore = scores.stream().collect(Collectors.averagingDouble(Double::doubleValue));
+                System.out.print("Average Score: " + averageScore); // Outputs: Average Score: 89.39999999999999
+
+                System.out.println();
+
+                // Average product weight calculation
+                double averageProductWeight = products.stream().collect(Collectors.averagingDouble(product -> product.weight));
+                System.out.print("Average Product Weight: " + averageProductWeight + " kg"); // Outputs: Average Product Weight: 3.1666666666666665 kg
+
+                System.out.println();
     }
 }
