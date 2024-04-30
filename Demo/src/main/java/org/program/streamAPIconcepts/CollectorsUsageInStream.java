@@ -146,5 +146,26 @@ public class CollectorsUsageInStream {
                 System.out.print("Total Weight: " + totalWeight + " kg"); // Outputs: Total Weight: 9.5 kg
 
                 System.out.println();
+        
+        //  Collectors for Averaging
+            //  averagingInt(ToIntFunction<? super T> mapper): Computes the average of an int-valued function over the elements.
+                // Average age calculation
+                double averageAge = people.stream().collect(Collectors.averagingInt(person -> person.age));
+                System.out.print("Average Age: " + averageAge); // Outputs: Average Age: 25.333333333333332
+
+                System.out.println();
+
+                // Average length of strings.
+                double averageLength = wordsForSumming.stream().collect(Collectors.averagingInt(String::length));
+                System.out.print("Average Length of Words: " + averageLength); // Outputs: Average Length of Words: 5.0
+
+                System.out.println();
+
+            //  averagingLong(ToLongFunction<? super T> mapper): Computes the average for long values.
+                // Average file size calculation.
+                double averageFileSize = fileSizes.stream().collect(Collectors.averagingLong(Long::longValue));
+                System.out.print("Average File Size: " + averageFileSize + " bytes"); // Outputs: Average File Size: 1194.6666666666667 bytes
+
+                System.out.println();
     }
 }
