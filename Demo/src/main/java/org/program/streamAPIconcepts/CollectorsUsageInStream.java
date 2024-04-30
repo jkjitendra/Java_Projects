@@ -233,5 +233,91 @@ public class CollectorsUsageInStream {
                 System.out.print("Total Weight starting from 10 kg: " + totalProductWeight + " kg"); // Outputs: Total Weight starting from 10 kg: 19.5 kg
 
                 System.out.println();
+
+        //  Grouping Elements
+            //  groupingBy(Function<? super T, ? extends K> classifier): Groups elements by a classifier function.
+                // Grouping persons by age.
+                List<Person> peopleGroupData = Arrays.asList(
+                        new Person("Alice", 24), new Person("Bob", 30), new Person("Charlie", 22),
+                        new Person("Drane", 22), new Person("Evans", 24), new Person("Fanthon", 30),
+                        new Person("Gotham", 22), new Person("Helana", 24), new Person("Inthoque", 30),
+                        new Person("John", 30), new Person("Klian", 22), new Person("Leonard", 24),
+                        new Person("Megasthali", 22), new Person("Neontha", 30), new Person("Oreman", 24)
+                );
+                Map<Integer, List<Person>> groupedByAge = peopleGroupData.stream().collect(Collectors.groupingBy(person -> person.age));
+                groupedByAge.forEach((age, persons) -> {
+                    System.out.print("Age: " + age + " ");
+                    persons.forEach(person -> System.out.print(person.name + ", "));
+                    System.out.println();
+                }); // Outputs: Age: 22 Charlie, Drane, Gotham, Klian, Megasthali,
+                    //          Age: 24 Alice, Evans, Helana, Leonard, Oreman,
+                    //          Age: 30 Bob, Fanthon, Inthoque, John, Neontha,
+
+                System.out.println();
+
+                // Grouping words by their length.
+                List<String> wordsForGrouping = Arrays.asList("hello", "world", "java", "stream", "spring", "group", "thread");
+                Map<Integer, List<String>> groupedByLength = wordsForGrouping.stream().collect(Collectors.groupingBy(String::length));
+                groupedByLength.forEach((len, ws) -> System.out.println("Length: " + len + ", Words: " + ws)); // Outputs: Length: 4, Words: [java]
+                                                                                                               //          Length: 5, Words: [hello, world, group]
+                                                                                                               //          Length: 6, Words: [stream, spring, thread]
+
+                System.out.println();
+
+            //  groupingBy(Function<? super T, ? extends K> classifier, Collector<? super T, A, D> downstream): Groups elements, applying a downstream collector to the results.
+                // Grouping persons by city and counting them
+                class Persons {
+                    String name;
+                    int age;
+                    String city;
+
+                    Persons(String name, int age, String city) {
+                        this.name = name;
+                        this.age = age;
+                        this.city = city;
+                    }
+                }
+                List<Persons> peoplesGroupData = Arrays.asList(
+                        new Persons("Alice", 24, "Pune"), new Persons("Bob", 30, "Indore"), new Persons("Charlie", 22, "Bangalore"),
+                        new Persons("Drane", 22, "Indore"), new Persons("Evans", 24, "Pune"), new Persons("Fanthon", 30, "Indore"),
+                        new Persons("Gotham", 22, "Indore"), new Persons("Helana", 24, "Bangalore"), new Persons("Inthoque", 30, "Pune")
+                );
+                Map<String, Long> countByCity = peoplesGroupData.stream()
+                                                                .collect(Collectors.groupingBy(person -> person.city, Collectors.counting()));
+                countByCity.forEach((city, count) -> System.out.println("City: " + city + ", Count: " + count)); // Outputs: City: Pune, Count: 3
+                                                                                                                 //          City: Indore, Count: 4
+                                                                                                                 //          City: Bangalore, Count: 2
+
+                System.out.println();
+
+                // Grouping numbers by parity and listing them.
+                List<Integer> numbersForGrouping = Arrays.asList(11, 26, 53, 14, 53, 36);
+                Map<String, List<Integer>> numbersByParity = numbersForGrouping.stream()
+                                                                               .collect(Collectors.groupingBy(n -> n % 2 == 0 ? "Even" : "Odd", Collectors.toList()));
+                numbersByParity.forEach((type, nums) -> System.out.println("Type: " + type + ", Numbers: " + nums)); // Outputs: Type: Even, Numbers: [26, 14, 36]
+                                                                                                                     //          Type: Odd,  Numbers: [11, 53, 53]
+
+                System.out.println();
+
+            //  groupingByConcurrent(Function<? super T, ? extends K> classifier): A concurrent version of groupingBy.
+                // Concurrent grouping of numbers by parity.
+                List<Integer> numbersForGroupingConcurrent = Arrays.asList(11, 26, 53, 14, 53, 36);
+                ConcurrentMap<String, List<Integer>> concurrentNumbersByParity = numbersForGroupingConcurrent.parallelStream()
+                                                                                                             .collect(Collectors.groupingByConcurrent(n -> n % 2 == 0 ? "Even" : "Odd"));
+                concurrentNumbersByParity.forEach((type, nums) -> System.out.println("Type: " + type + ", Numbers: " + nums)); // Outputs: Type: Even, Numbers: [26, 14, 36]
+                                                                                                                               //          Type: Odd,  Numbers: [11, 53, 53]
+
+                System.out.println();
+
+                // Concurrent grouping of words by their first letter.
+                List<String> wordsForConcurrentGrouping = Arrays.asList("apple", "banana", "apple", "orange", "banana", "grape");
+                ConcurrentMap<Character, List<String>> wordsByFirstLetter = wordsForConcurrentGrouping.parallelStream()
+                                                                                                      .collect(Collectors.groupingByConcurrent(w -> w.charAt(0)));
+                wordsByFirstLetter.forEach((letter, ws) -> System.out.println("Letter: " + letter + ", Words: " + ws)); // Outputs: Letter: a, Words: [apple, apple]
+                                                                                                                        //          Letter: b, Words: [banana, banana]
+                                                                                                                        //          Letter: g, Words: [grape]
+                                                                                                                        //          Letter: o, Words: [orange]
+        
+                System.out.println();
     }
 }
