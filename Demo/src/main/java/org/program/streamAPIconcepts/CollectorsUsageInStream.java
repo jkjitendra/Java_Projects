@@ -186,5 +186,45 @@ public class CollectorsUsageInStream {
                 System.out.print("Average Product Weight: " + averageProductWeight + " kg"); // Outputs: Average Product Weight: 3.1666666666666665 kg
 
                 System.out.println();
+
+        //  Specialized Reductions
+            //  reducing(BinaryOperator<T> op): Performs a reduction on the elements, using an associative accumulation function.
+                // Reduce to find the longest string
+                List<String> wordsForReducing = Arrays.asList("hello", "world", "java", "stream");
+                Optional<String> longestWord = wordsForReducing.stream().collect(Collectors.reducing((s1, s2) -> s1.length() > s2.length() ? s1 : s2));
+                longestWord.ifPresent(System.out::print); // Outputs the longest word: stream
+
+                System.out.println();
+
+                // Reduce to find the maximum integer.
+                List<Integer> numbersForReducing = Arrays.asList(11, 26, 53, 14, 53, 36);
+                Optional<Integer> maxNumber = numbersForReducing.stream().collect(Collectors.reducing(Integer::max));
+                maxNumber.ifPresent(System.out::print); // Outputs the maximum number: 53
+
+                System.out.println();
+
+            //  reducing(T identity, BinaryOperator<T> op): A more generalized form of reducing that includes an identity value.
+                // Reducing with identity to calculate total age with a starting age
+                List<Person> peopleData = Arrays.asList(new Person("Alice", 24), new Person("Bob", 30), new Person("Charlie", 22));
+                int totalAgeWithStart = peopleData.stream().collect(Collectors.reducing(100, person -> person.age, Integer::sum));
+                System.out.print("Total Age starting from 100: " + totalAgeWithStart); // Outputs: Total Age starting from 100: 176
+
+                System.out.println();
+
+                // Reducing to concatenate strings with a prefix.
+                String allNames = people.stream()
+                                        .map(person -> person.name)
+                                        .collect(Collectors.reducing("Names: ", (s1, s2) -> s1 + " " + s2));
+                System.out.print(allNames); // Outputs: Names: Alice Bob Charlie
+
+                System.out.println();
+
+            //  reducing(U identity, Function<? super T, U> mapper, BinaryOperator<U> op): Maps values to another type before reducing.
+                // Reducing to calculate the total length of names starting from a base value
+                List<Person> peoplesData = Arrays.asList(new Person("Ali", 24), new Person("Bob", 30), new Person("Charlie", 22));
+                int totalLengthOfNames = peoplesData.stream().collect(Collectors.reducing(0, person -> person.name.length(), Integer::sum));
+                System.out.print("Total Length of Names starting from 0: " + totalLengthOfNames); // Outputs: Total Length of Names starting from 0: 13
+
+                System.out.println();
     }
 }
