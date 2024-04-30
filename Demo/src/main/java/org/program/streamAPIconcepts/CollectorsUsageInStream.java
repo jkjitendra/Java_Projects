@@ -75,7 +75,7 @@ public class CollectorsUsageInStream {
 
                 System.out.println();
 
-        //  Collectors for Summarizing Elements
+        //  Collectors for Summing Elements
             //  summingInt(ToIntFunction<? super T> mapper): Produces the sum of a transformed int-valued function applied to the elements.
                 // Calculating total age from a list of persons
                 class Person {
@@ -226,7 +226,8 @@ public class CollectorsUsageInStream {
                 System.out.print("Total Length of Names starting from 0: " + totalLengthOfNames); // Outputs: Total Length of Names starting from 0: 13
 
                 System.out.println();
-
+        
+                // Reducing to sum product weights starting from a base weight.
                 double totalProductWeight = products.stream()
                                                     .collect(Collectors.reducing(10.0, product -> product.weight, Double::sum));
                 System.out.print("Total Weight starting from 10 kg: " + totalProductWeight + " kg"); // Outputs: Total Weight starting from 10 kg: 19.5 kg
