@@ -443,5 +443,77 @@ public class CollectorsUsageInStream {
 
                 System.out.println();
 
+        //  Specialized Operations
+            //  summarizingInt(ToIntFunction<? super T> mapper): Produces a summary for int values (count, sum, min, max, average).
+                // Generating statistics for the ages of people.
+                List<PersonData> peoplesSummarizingInt = Arrays.asList(
+                        new PersonData("Alice", 12, "Pune", Arrays.asList("badminton", "volleyball", "basketball", "football", "chess", "carrom")),
+                        new PersonData("Bob", 30, "Indore", Arrays.asList("badminton", "volleyball", "carrom")),
+                        new PersonData("Charlie", 22, "Bangalore", Arrays.asList("football", "chess", "carrom")),
+                        new PersonData("Drane", 15, "Indore", Arrays.asList("badminton", "basketball", "football", "carrom")),
+                        new PersonData("Evans", 24, "Pune", Arrays.asList("badminton", "volleyball", "chess", "carrom")),
+                        new PersonData("Fanthon", 18, "Indore", Arrays.asList("basketball", "football", "chess", "carrom")),
+                        new PersonData("Gotham", 14, "Indore", Arrays.asList("badminton", "volleyball", "football", "chess")),
+                        new PersonData("Helana", 24, "Bangalore", Arrays.asList("badminton", "volleyball", "basketball", "football")),
+                        new PersonData("Inthoque", 17, "Pune", Arrays.asList("volleyball","football", "chess", "carrom"))
+                );
+                IntSummaryStatistics ageStatistics = peoplesSummarizingInt.stream()
+                        .collect(Collectors.summarizingInt(person -> person.age));
+                System.out.print("Age Statistics: " + ageStatistics); // Outputs: Age Statistics: IntSummaryStatistics{count=9, sum=176, min=12, average=19.555556, max=30}
+
+                System.out.println();
+
+                // Generating statistics for the lengths of words.
+                List<String> wordsForSummarizing = Arrays.asList("hello", "world", "java", "stream", "spring", "group", "thread");
+                IntSummaryStatistics wordLengthStatistics = wordsForSummarizing.stream().collect(Collectors.summarizingInt(String::length));
+                System.out.print("Word Length Statistics: " + wordLengthStatistics); // Outputs: Word Length Statistics: IntSummaryStatistics{count=7, sum=37, min=4, average=5.285714, max=6}
+
+                System.out.println();
+
+            //  summarizingLong(ToLongFunction<? super T> mapper): Produces a summary for long values.
+                // Generating statistics for file sizes.
+                List<Long> fileSizesList = Arrays.asList(1024L, 2048L, 512L, 4096L, 65536L);
+                LongSummaryStatistics fileSizeStatistics = fileSizesList.stream().collect(Collectors.summarizingLong(Long::longValue));
+                System.out.print("File Size Statistics: " + fileSizeStatistics); // Outputs: File Size Statistics: LongSummaryStatistics{count=5, sum=73216, min=512, average=14643.200000, max=65536}
+
+                System.out.println();
+
+                // Generating statistics for session durations.
+                List<Long> sessionDurations = Arrays.asList(30L, 45L, 25L, 50L);
+                LongSummaryStatistics sessionStatistics = sessionDurations.stream()
+                        .collect(Collectors.summarizingLong(Long::longValue));
+                System.out.print("Session Duration Statistics: " + sessionStatistics); // Outputs: Session Duration Statistics: LongSummaryStatistics{count=4, sum=150, min=25, average=37.500000, max=50}
+
+                System.out.println();
+
+            //  summarizingDouble(ToDoubleFunction<? super T> mapper): Produces a summary for double values.
+                // Generating statistics for product prices.
+                List<Double> productPrices = Arrays.asList(19.99, 5.49, 15.99, 25.99);
+                DoubleSummaryStatistics priceStatistics = productPrices.stream()
+                        .collect(Collectors.summarizingDouble(Double::doubleValue));
+                System.out.print("Product Price Statistics: " + priceStatistics); // Outputs: Product Price Statistics: DoubleSummaryStatistics{count=4, sum=67.460000, min=5.490000, average=16.865000, max=25.990000}
+
+                System.out.println();
+
+                // Generating statistics for temperatures.
+                List<Double> temperatures = Arrays.asList(22.5, 18.5, 25.0, 21.0);
+                DoubleSummaryStatistics temperatureStatistics = temperatures.stream()
+                        .collect(Collectors.summarizingDouble(Double::doubleValue));
+                System.out.print("Temperature Statistics: " + temperatureStatistics); // Outputs: Temperature Statistics: DoubleSummaryStatistics{count=4, sum=87.000000, min=18.500000, average=21.750000, max=25.000000}
+
+                System.out.println();
+
+    }
+
+    private static boolean isPrime(int num) {
+        boolean flag = false;
+
+        for (int i = 2; i <= Math.sqrt(num); i++) {
+            if (num % i == 0) {
+                flag = true;
+                break;
+            }
+        }
+        return !flag;
     }
 }
