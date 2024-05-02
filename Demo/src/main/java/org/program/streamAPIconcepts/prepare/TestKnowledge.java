@@ -143,5 +143,37 @@ public class TestKnowledge {
 
             System.out.println();
 
+        // Advanced Questions
+        // Complex Reductions:
+            /* Discuss how you would use streams to create a map where each key is a customer age group (e.g., "Under 18", "18-65", "Above 65")
+            and the value is the average account balance for customers in that age group. */
+            List<Customer> customersComplexReduction = Arrays.asList(
+                    new Customer("Alice", 17, Arrays.asList(new Account(500))),
+                    new Customer("Bob", 23, Arrays.asList(new Account(5000))),
+                    new Customer("Charlie", 70, Arrays.asList(new Account(7000)))
+            );
+            final String UNDER_18 = "Under 18";
+            final String BETWEEN_18_AND_65 = "18-65";
+            final String ABOVE_65 = "Above 65";
+
+            Map<String, Double> customerStream = customersComplexReduction.stream()
+                .collect(Collectors.groupingBy(customer -> {
+                    int age = customer.getAge();
+                    if (age < 18) return UNDER_18;
+                    else if (age <= 65) return BETWEEN_18_AND_65;
+                    else return ABOVE_65;
+                }, Collectors.averagingDouble(customer -> customer.getAccounts().stream().mapToDouble(Account::getBalance).sum())
+            ));
+            customerStream.forEach((ageGroup, avgBalance) -> {
+                System.out.printf("%s: %.2f%n", ageGroup, avgBalance);
+            });
+
+            // Outputs:
+            //  Above 65: 7000.00
+            //  Under 18: 500.00
+            //  18-65: 5000.00
+        
+            System.out.println();
+
     }
 }
