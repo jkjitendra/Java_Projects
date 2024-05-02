@@ -365,5 +365,83 @@ public class CollectorsUsageInStream {
 
                 System.out.println();
 
+        //  Advanced Collectors
+            //  collectingAndThen(Collector<T, A, R> downstream, Function<R, RR> finisher): Adapts a collector to perform an additional finishing transformation.
+                // Collecting names into a list and then converting it to an immutable list.
+                List<Persons> peoplesImmutable = Arrays.asList(
+                        new Persons("Alice", 12, "Pune"), new Persons("Bob", 30, "Indore"), new Persons("Charlie", 22, "Bangalore"),
+                        new Persons("Drane", 15, "Indore"), new Persons("Evans", 24, "Pune"), new Persons("Fanthon", 18, "Indore"),
+                        new Persons("Gotham", 14, "Indore"), new Persons("Helana", 24, "Bangalore"), new Persons("Inthoque", 17, "Pune")
+                );
+                List<String> immutableNames = peoplesImmutable.stream()
+                                                    .map(person -> person.name)
+                                                    .collect(Collectors.collectingAndThen(Collectors.toList(), Collections::unmodifiableList));
+                System.out.print("Immutable Names: " + immutableNames); // Outputs: Immutable Names: [Alice, Bob, Charlie, Drane, Evans, Fanthon, Gotham, Helana, Inthoque]
+
+                System.out.println();
+
+                // Collecting elements into a set and then converting it to a sorted list.
+                List<Integer> numbersSorting = Arrays.asList(11, 26, 53, 14, 13, 36);
+                List<Integer> sortedSet = numbersSorting.stream().collect(Collectors.collectingAndThen(Collectors.toSet(), set -> new ArrayList<>(new TreeSet<>(set))));
+                System.out.print("Sorted Set: " + sortedSet); // Outputs: Sorted Set: [11, 13, 14, 26, 36, 53]
+
+                System.out.println();
+
+            //  mapping(Function<? super T, ? extends U> mapper, Collector<? super U, A, R> downstream): Adapts a collector to another type by applying a mapping function before collecting.
+                // Mapping person names and collecting them into a list.
+                List<Persons> peoplesList = Arrays.asList(
+                        new Persons("Alice", 12, "Pune"), new Persons("Bob", 30, "Indore"), new Persons("Charlie", 22, "Bangalore"),
+                        new Persons("Drane", 15, "Indore"), new Persons("Evans", 24, "Pune"), new Persons("Fanthon", 18, "Indore"),
+                        new Persons("Gotham", 14, "Indore"), new Persons("Helana", 24, "Bangalore"), new Persons("Inthoque", 17, "Pune")
+                );
+                List<String> personNames = peoplesList.stream().collect(Collectors.mapping(person -> person.name, Collectors.toList()));
+                System.out.print("Person Names as a List: " + personNames); // Outputs: Person Names as a List: [Alice, Bob, Charlie, Drane, Evans, Fanthon, Gotham, Helana, Inthoque]
+
+                System.out.println();
+
+                // Mapping product weights and collecting them into a set to eliminate duplicates.
+                List<Product> productsCollection = Arrays.asList(
+                        new Product(4.5), new Product(3.2), new Product(1.8),
+                        new Product(4.3), new Product(3.9), new Product(1.5),
+                        new Product(4.5), new Product(3.2), new Product(1.8),
+                        new Product(4.3), new Product(3.9), new Product(1.5)
+                );
+                Set<Double> productWeights = productsCollection.stream().collect(Collectors.mapping(product -> product.weight, Collectors.toSet()));
+                System.out.print("Product Weights: " + productWeights); // Outputs: Product Weights: [1.8, 4.5, 4.3, 3.2, 1.5, 3.9]
+
+                System.out.println();
+
+            //  flatMapping(Function<? super T, ? extends Stream<? extends U>> mapper, Collector<? super U, A, R> downstream): Similar to mapping, but flattens a stream before collecting.
+                // Flattening person hobbies and collecting into a set.
+                class PersonData {
+                    String name;
+                    int age;
+                    String city;
+                    List<String> hobbies;
+
+                    PersonData(String name, int age, String city, List<String> hobbies) {
+                        this.age = age;
+                        this.name = name;
+                        this.city = city;
+                        this.hobbies = hobbies;
+                    }
+                }
+                List<PersonData> peoplesCollectionList = Arrays.asList(
+                        new PersonData("Alice", 12, "Pune", Arrays.asList("badminton", "volleyball", "basketball", "football", "chess", "carrom")), new PersonData("Bob", 30, "Indore", Arrays.asList("badminton", "volleyball", "carrom")), new PersonData("Charlie", 22, "Bangalore", Arrays.asList("football", "chess", "carrom")),
+                        new PersonData("Drane", 15, "Indore", Arrays.asList("badminton", "basketball", "football", "carrom")), new PersonData("Evans", 24, "Pune", Arrays.asList("badminton", "volleyball", "chess", "carrom")), new PersonData("Fanthon", 18, "Indore", Arrays.asList("basketball", "football", "chess", "carrom")),
+                        new PersonData("Gotham", 14, "Indore", Arrays.asList("badminton", "volleyball", "football", "chess")), new PersonData("Helana", 24, "Bangalore", Arrays.asList("badminton", "volleyball", "basketball", "football")), new PersonData("Inthoque", 17, "Pune", Arrays.asList("volleyball","football", "chess", "carrom"))
+                );
+                Set<String> allHobbies = peoplesCollectionList.stream().collect(Collectors.flatMapping(p -> p.hobbies.stream(), Collectors.toSet()));
+                System.out.print("All unique Hobbies: " + allHobbies); // Outputs: All unique Hobbies: [carrom, basketball, chess, badminton, volleyball, football]
+
+                System.out.println();
+
+                // Flattening nested integer lists and collecting into a set
+                List<List<Integer>> listOfIntegerLists = Arrays.asList(Arrays.asList(1, 2), Arrays.asList(3, 4), Arrays.asList(1, 2));
+                Set<Integer> flattenedSet = listOfIntegerLists.stream().collect(Collectors.flatMapping(List::stream, Collectors.toSet()));
+                System.out.print("Flattened Set: " + flattenedSet); // Outputs: Flattened Set: [1, 2, 3, 4]
+
+                System.out.println();
+
     }
 }
