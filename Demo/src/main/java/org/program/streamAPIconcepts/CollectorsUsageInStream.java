@@ -319,5 +319,51 @@ public class CollectorsUsageInStream {
                                                                                                                         //          Letter: o, Words: [orange]
         
                 System.out.println();
+        
+        //  Partitioning Elements
+            //  partitioningBy(Predicate<? super T> predicate): Partitions elements according to a predicate.
+                // Partitioning numbers into even and odd.
+                List<Integer> numbersForPartitioning = Arrays.asList(11, 26, 53, 14, 53, 36);
+                Map<Boolean, List<Integer>> partitionedNumbers = numbersForPartitioning.stream().collect(Collectors.partitioningBy(n -> n % 2 == 0));
+                partitionedNumbers.forEach((isEven, nums) -> System.out.println("Is Even: " + isEven + ", Numbers: " + nums)); // Outputs: Is Even: false, Numbers: [11, 53, 53]
+                                                                                                                               //          Is Even: true,  Numbers: [26, 14, 36]
+
+                System.out.println();
+
+                // Partitioning people into adults and minors.
+                List<Persons> peoplesPartitioningData = Arrays.asList(
+                        new Persons("Alice", 12, "Pune"), new Persons("Bob", 30, "Indore"), new Persons("Charlie", 22, "Bangalore"),
+                        new Persons("Drane", 15, "Indore"), new Persons("Evans", 24, "Pune"), new Persons("Fanthon", 18, "Indore"),
+                        new Persons("Gotham", 14, "Indore"), new Persons("Helana", 24, "Bangalore"), new Persons("Inthoque", 17, "Pune")
+                );
+                Map<Boolean, List<Persons>> partitionedPeople = peoplesPartitioningData.stream().collect(Collectors.partitioningBy(p -> p.age >= 18));
+                partitionedPeople.forEach((isAdult, ps) -> {
+                    System.out.print("Is Adult: " + isAdult + " [ ");
+                    ps.forEach(p -> System.out.print(p.name + ", "));
+                    System.out.println("]");
+                }); // Outputs: Is Adult: false [ Alice, Drane, Gotham, Inthoque, ]
+                    //          Is Adult: true  [ Bob, Charlie, Evans, Fanthon, Helana, ]
+
+                System.out.println();
+
+            //  partitioningBy(Predicate<? super T> predicate, Collector<? super T, A, D> downstream): Partitions elements and applies a downstream collector to the results.
+                // Partitioning words by length and counting each group.
+                List<String> wordsForPartitioning = Arrays.asList("hello", "world", "java", "stream", "spring", "group", "thread");
+                Map<Boolean, Long> wordsPartitionedByLength = wordsForPartitioning.stream()
+                                                                                  .collect(Collectors.partitioningBy(w -> w.length() > 5, Collectors.counting()));
+                wordsPartitionedByLength.forEach((isLonger, count) -> System.out.println("Is Longer Than 5: " + isLonger + ", Count: " + count)); // Outputs: Is Longer Than 5: false, Count: 4
+                                                                                                                                                  //          Is Longer Than 5: true,  Count: 3
+
+                System.out.println();
+
+                // Partitioning numbers into primes and non-primes and collecting them into lists
+                List<Integer> numbersPartitioning = Arrays.asList(11, 26, 53, 14, 13, 36);
+                Map<Boolean, List<Integer>> primePartition = numbersPartitioning.stream()
+                        .collect(Collectors.partitioningBy(CollectorsUsageInStream::isPrime, Collectors.toList()));
+                primePartition.forEach((isPrime, nums) -> System.out.println("Is Prime: " + isPrime + ", Numbers: " + nums)); // Outputs: Is Prime: false, Numbers: [26, 14, 36]
+                                                                                                                              //          Is Prime: true,  Numbers: [11, 53, 13]
+
+                System.out.println();
+
     }
 }
