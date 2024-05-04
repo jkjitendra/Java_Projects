@@ -69,7 +69,7 @@ Contributions are welcome. Please fork the repository and submit pull requests t
 
 ## Contact
 Your Name - Jitendra Kumar Tiwari <br/>
-Project Link: https://github.com/jkjitendra/Java_Projects/RetailStoreProductSync
+Project Link: [https://github.com/jkjitendra/Java_Projects/RetailStoreProductSync](https://github.com/jkjitendra/Java_Projects/tree/main/RetailStoreProductSync)
 
 ## Acknowledgements
 - [Fake Store API](https://fakestoreapi.com)
