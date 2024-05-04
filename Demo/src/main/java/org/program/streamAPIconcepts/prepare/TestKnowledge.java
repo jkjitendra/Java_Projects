@@ -175,5 +175,31 @@ public class TestKnowledge {
         
             System.out.println();
 
+        // Concurrency and Parallel Streams:
+            /* How would you modify a stream processing operation to use parallel streams to speed up processing a large dataset,
+               and what considerations should you take into account when doing so? */
+            long startTimeParallel = System.nanoTime();
+            System.out.println("start time: " + startTimeParallel);
+            List<Integer> largeDataset = new Random().ints(1, 40).limit(120).boxed().collect(Collectors.toList());
+            List<Integer> processedLargeDatasetParallely = largeDataset.parallelStream()
+                    .mapToInt(TestKnowledge::computeExpensiveOperation)  // Hypothetical computationally expensive operation (Check prime and return the number which is divisible by
+                    .boxed()
+                    .collect(Collectors.toList());
+            processedLargeDatasetParallely.forEach(System.out::println);
+            double endTime = (double) (System.nanoTime() - startTimeParallel) / 1_000_000;
+            System.out.println("end time: " + endTime / 1000);
+
+            // Outputs: List of fibonacci numbers generated for numbers present in the largeDataset
+
+//            long startTimeSequence = System.nanoTime();
+//            System.out.println("start time: " + startTimeSequence);
+//            List<Integer> processedLargeDatasetSequencially = largeDataset.stream()
+//                    .mapToInt(TestKnowledge::computeExpensiveOperation)  // Hypothetical computationally expensive operation (Check prime and return the number which is divisible by
+//                    .boxed()
+//                    .collect(Collectors.toList());
+//            processedLargeDatasetSequencially.forEach(System.out::println);
+//            double endTimeSequence = (double) (System.nanoTime() - startTimeSequence) /1_000_000;
+//            System.out.println("end time: " + endTimeSequence/1000);
+
     }
 }
