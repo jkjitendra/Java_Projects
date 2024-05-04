@@ -68,7 +68,7 @@ Once the application is running, it will automatically fetch product data from t
 Contributions are welcome. Please fork the repository and submit pull requests to the main branch. For major changes, please open an issue first to discuss what you would like to change.
 
 ## Contact
-Your Name - Jitendra Kumar Tiwari <br/>
+Name - Jitendra Kumar Tiwari <br/>
 Project Link: [https://github.com/jkjitendra/Java_Projects/RetailStoreProductSync](https://github.com/jkjitendra/Java_Projects/tree/main/RetailStoreProductSync)
 
 ## Acknowledgements
