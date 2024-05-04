@@ -201,5 +201,14 @@ public class TestKnowledge {
 //            double endTimeSequence = (double) (System.nanoTime() - startTimeSequence) /1_000_000;
 //            System.out.println("end time: " + endTimeSequence/1000);
 
+        // Custom Collector:
+           /* Can you devise a custom collector that takes a stream of numbers and returns a custom statistics object that
+              includes the sum, product, minimum, maximum, and average of these numbers? */
+            List<Integer> numbers = Arrays.asList(2, 7, 3, 9, 5);
+            CustomStatisticsCollector.CustomStatistics stats = numbers.stream().collect(new CustomStatisticsCollector());
+            System.out.print(stats);
+
+            System.out.println();
+
     }
 }
