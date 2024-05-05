@@ -308,9 +308,57 @@ public class TestKnowledge {
                 e.printStackTrace();
             }
 
+        // Data Cleansing:
+           /* Describe a process using Java streams to read a large CSV file of user data, filter out rows with missing values, transform/cleanse data formats
+              (like dates and phone numbers), and collect results into a new CSV file. */
+            List<String> csvRows = Arrays.asList(
+                    "UserID,Name,DateOfBirth,PhoneNumber", // This is the header
+                    "1,John Doe,1985-02-15,555-3421",
+                    "2,Jane Smith,1990-11-01,555-7102",
+                    "3,Bob Johnson,,555-6403",
+                    "4,Lisa White,1987-07-23",
+                    "5,Alex Green,1992-03-12,555-9821",
+                    "6,Sam Blue,1989-06-09,555-4532",
+                    "7,Kate Black,1991-08-19,555-7845"
+            );
+//            try (FileWriter writer = new FileWriter("output.csv")) {
+//                boolean firstLine = true;
+//                for (String row : csvRows) {
+//                    if (firstLine) {
+//                        writer.write(row + "\n"); // Write the header
+//                        firstLine = false;
+//                    } else {
+//                        writer.write(row + "\n"); // Write the data rows
+//                    }
+//                }
+//                writer.flush();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+
+            String inputPath = "output.csv";
+            String outputPath = "cleaned_data.csv";
+            try (CSVReader reader = new CSVReader(new FileReader(inputPath));
+                 CSVWriter writer = new CSVWriter(new FileWriter(outputPath))) {
+                // Skip header
+                String[] headers = reader.readNext();
+                writer.writeNext(headers);
+
+                List<String[]> filteredAndTransformed = reader.readAll().stream()
+                        .filter(row -> row.length == 4 && !anyFieldEmpty(row))
+                        .map(TestKnowledge::transformRow)
+                        .collect(Collectors.toList());
+
+                writer.writeAll(filteredAndTransformed);
+                System.out.println("Data Cleansed and stored in " + outputPath);
+
+            }
+            catch (CsvException | IOException e) {
+                e.printStackTrace();
+            }
+
     }
 
-    
     private static int computeExpensiveOperation(int value) {
         // Calculate Fibonacci number for each value (naively)
         if (value <= 1) return value;
@@ -345,6 +393,24 @@ public class TestKnowledge {
                 System.err.println("Error fetching stock price: " + e.getMessage());
                 return Mono.just(0.0); // Return a default value in case of error
             });
-        
     }
+
+    private static boolean anyFieldEmpty(String[] row) {
+        for (String field : row) {
+            if (field == null || field.isEmpty()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static String[] transformRow(String[] row) {
+        // Assuming DateOfBirth is in the format yyyy-MM-dd and needs no change
+        // PhoneNumber might be formatted or validated here
+        String formattedPhone = row[3].replaceAll("-", "");
+        formattedPhone = "+91" + formattedPhone; // Assuming Indian numbers for simplicity
+
+        return new String[]{row[0], row[1], row[2], formattedPhone};
+    }
+
 }
