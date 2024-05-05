@@ -264,5 +264,24 @@ public class TestKnowledge {
 
             System.out.println();
 
+        //Real-World Scenario-Based Questions
+        // Efficient Data Processing:
+           /* Given a real-time stream of stock market price updates, explain how you would use streams to filter out updates for a particular stock symbol
+              and calculate a moving average. */
+
+            //  Bounded stream values
+            Stream<StockUpdate> stockUpdates = Stream.of(
+                    new StockUpdate("AAPL", 150.25),
+                    new StockUpdate("GOOGL", 1200.75),
+                    new StockUpdate("AAPL", 151.00)
+            );
+            OptionalDouble movingAvg = stockUpdates
+                    .filter(stockUpdate -> stockUpdate.getSymbol().equals("AAPL"))
+                    .mapToDouble(StockUpdate::getPrice)
+                    .average();
+            movingAvg.ifPresent(value -> System.out.print("Moving average: " + value)); // Outputs: Moving average: 150.625
+
+            System.out.println();
+
     }
 }
