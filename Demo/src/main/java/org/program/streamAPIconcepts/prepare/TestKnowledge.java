@@ -248,5 +248,21 @@ public class TestKnowledge {
 
             System.out.println();
 
+        // Advanced Filtering and Optional:
+           /* Using a stream of Employee objects, where each Employee has fields for job title and salary, find the highest salary of an "Engineer".
+              Return this value wrapped in an Optional for safe processing. */
+            List<Employee> employees = Arrays.asList(
+                    new Employee("Engineer", 80000),
+                    new Employee("Engineer", 90000),
+                    new Employee("Manager", 95000)
+            );
+            OptionalDouble maxSal = employees.stream()
+                    .filter(employee -> employee.getJobTitle().equals("Engineer"))
+                    .mapToDouble(Employee::getSalary)
+                    .max();
+            maxSal.ifPresent(value -> System.out.print("Maximum Salary among Engineers: " + value));
+
+            System.out.println();
+
     }
 }
