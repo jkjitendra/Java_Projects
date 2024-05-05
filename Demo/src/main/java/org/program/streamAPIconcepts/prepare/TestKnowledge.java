@@ -206,7 +206,7 @@ public class TestKnowledge {
               includes the sum, product, minimum, maximum, and average of these numbers? */
             List<Integer> numbers = Arrays.asList(2, 7, 3, 9, 5);
             CustomStatisticsCollector.CustomStatistics stats = numbers.stream().collect(new CustomStatisticsCollector());
-            System.out.print(stats);
+            System.out.print(stats); // Outputs: CustomStatistics{count=5, sum=26, product=1890, min=2, average=5.200000, max=9}
 
             System.out.println();
 
@@ -233,7 +233,7 @@ public class TestKnowledge {
                             .sum()
                     ).sum();
 
-            System.out.print("Total Revenue for Completed Orders: " + totalRevenue);
+            System.out.print("Total Revenue for Completed Orders: " + totalRevenue); // Outputs: Total Revenue for Completed Orders: 73.97
 
             System.out.println();
 
@@ -244,7 +244,7 @@ public class TestKnowledge {
                     .mapToDouble(order -> productPriceMap.getOrDefault(order.getProductId(), 0.0))
                     .sum();
 
-            System.out.print("Total Revenue for Completed Orders: " + totalRevenueOfCompletedOrders);
+            System.out.print("Total Revenue for Completed Orders: " + totalRevenueOfCompletedOrders); // Outputs: Total Revenue for Completed Orders: 73.97
 
             System.out.println();
 
@@ -260,7 +260,7 @@ public class TestKnowledge {
                     .filter(employee -> employee.getJobTitle().equals("Engineer"))
                     .mapToDouble(Employee::getSalary)
                     .max();
-            maxSal.ifPresent(value -> System.out.print("Maximum Salary among Engineers: " + value));
+            maxSal.ifPresent(value -> System.out.print("Maximum Salary among Engineers: " + value)); // Outputs: Maximum Salary among Engineers: 90000.0
 
             System.out.println();
 
