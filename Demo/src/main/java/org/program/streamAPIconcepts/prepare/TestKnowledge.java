@@ -210,5 +210,43 @@ public class TestKnowledge {
 
             System.out.println();
 
+        // Data Joining and Stream Operations:
+           /* Assume you have two lists: one of Order objects and one of Product objects. Each Order includes an order ID and product ID,
+              while each Product includes a product ID and price. Write a stream expression to calculate the total revenue (sum of all product prices per order)
+              for completed orders. */
+            List<Order> orders = Arrays.asList(
+                    new Order(1, "A123", OrderStatus.COMPLETED),
+                    new Order(2, "B456", OrderStatus.COMPLETED),
+                    new Order(3, "A123", OrderStatus.PENDING),
+                    new Order(4, "B123", OrderStatus.COMPLETED)
+            );
+            List<Product> products = Arrays.asList(
+                    new Product("A123", 19.99),
+                    new Product("B456", 29.99),
+                    new Product("B123", 23.99)
+            );
+            double totalRevenue = orders.stream()
+                    .filter(order -> order.getStatus() == OrderStatus.COMPLETED)
+                    .mapToDouble(orderForProduct -> products.stream()
+                            .filter(product -> product.getProductId().equals(orderForProduct.getProductId()))
+                            .mapToDouble(Product::getPrice)
+                            .sum()
+                    ).sum();
+
+            System.out.print("Total Revenue for Completed Orders: " + totalRevenue);
+
+            System.out.println();
+
+            Map<String, Double> productPriceMap = products.stream()
+                    .collect(Collectors.toMap(Product::getProductId, Product::getPrice));
+            double totalRevenueOfCompletedOrders = orders.stream()
+                    .filter(order -> order.getStatus() == OrderStatus.COMPLETED)
+                    .mapToDouble(order -> productPriceMap.getOrDefault(order.getProductId(), 0.0))
+                    .sum();
+
+            System.out.print("Total Revenue for Completed Orders: " + totalRevenueOfCompletedOrders);
+
+            System.out.println();
+
     }
 }
