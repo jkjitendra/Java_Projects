@@ -9,6 +9,9 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class TestKnowledge {
+
+    private static final WebClient webClient = WebClient.create("https://www.alphavantage.co");
+    
     public static void main(String[] args) {
     //  Basic to Intermediate Questions
         // Data Filtering and Collection:
@@ -283,5 +286,65 @@ public class TestKnowledge {
 
             System.out.println();
 
+            // real-time moving average using Flux
+            final int bufferSize = 10; // Size of the window for the moving average
+            Queue<Double> priceBuffer = new ArrayDeque<>(bufferSize);
+            String stockSymbol = "IBM";
+            Flux.interval(Duration.ofSeconds(3)) // Adjust the interval as needed
+                    .flatMap(tick -> fetchStockPrice(stockSymbol))
+                    .map(price -> {
+                        if (priceBuffer.size() == bufferSize) {
+                            priceBuffer.poll(); // Remove the oldest price
+                        }
+                        priceBuffer.offer(price); // Add the latest price
+                        return priceBuffer.stream().mapToDouble(Double::doubleValue).average().orElse(0.0); // Calculate the average
+                    })
+                    .subscribe(average -> System.out.println("Moving average in real-time: " + average)); // Print the moving average
+
+            try {
+                Thread.sleep(60000); // Let the flux emit for 60 seconds
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                e.printStackTrace();
+            }
+
+    }
+
+    
+    private static int computeExpensiveOperation(int value) {
+        // Calculate Fibonacci number for each value (naively)
+        if (value <= 1) return value;
+        else return computeExpensiveOperation(value-1) + computeExpensiveOperation(value-2);
+    }
+
+    private static Mono<Double> fetchStockPrice(String symbol) {
+        
+        // Real API call
+        return webClient.get()
+            .uri(uriBuilder -> uriBuilder
+                .path("/query")
+                .queryParam("function", "TIME_SERIES_INTRADAY")
+                .queryParam("symbol", symbol)
+                .queryParam("interval", "5min")
+                .queryParam("apikey", "1SAO55O47OAIS500")
+                .build()
+            )
+            .retrieve()
+            .bodyToMono(StockPriceResponse.class)
+            .map(response -> {
+                // Proceed with extracting and processing the data
+                Map<String, Map<String, String>> timeSeries = response.getTimeSeries();
+                Optional<String> mostRecentEntry = timeSeries.keySet().stream()
+                    .sorted(Comparator.reverseOrder()) // Sort the keys in reverse order (newest first)
+                    .findFirst();
+                return mostRecentEntry
+                    .map(timeKey -> Double.parseDouble(timeSeries.get(timeKey).get("4. close"))) // Parse the closing price
+                    .orElse(0.0);
+            })
+            .onErrorResume(e -> {
+                System.err.println("Error fetching stock price: " + e.getMessage());
+                return Mono.just(0.0); // Return a default value in case of error
+            });
+        
     }
 }
