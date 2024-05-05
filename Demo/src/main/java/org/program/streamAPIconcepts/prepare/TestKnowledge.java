@@ -357,6 +357,33 @@ public class TestKnowledge {
                 e.printStackTrace();
             }
 
+        // Business Rule Implementation:
+           /* You have a continuous stream of e-commerce transactions. How would you implement a system using Java streams to detect and
+              alert if the total transaction amount for a single customer in a single day exceeds a threshold, e.g., $10,000? */
+            List<TransactionMonitor> transactionsStream = new ArrayList<>();
+            // Simulate transactions for various customers on the same day
+            transactionsStream.add(new TransactionMonitor("Cust1", new Date(), 5000));
+            transactionsStream.add(new TransactionMonitor("Cust1", new Date(), 7000));
+            transactionsStream.add(new TransactionMonitor("Cust2", new Date(), 2000));
+            transactionsStream.add(new TransactionMonitor("Cust1", new Date(), 500));
+            transactionsStream.add(new TransactionMonitor("Cust2", new Date(), 4000));
+            transactionsStream.add(new TransactionMonitor("Cust3", new Date(), 200));
+
+            final double THRESHOLD = 10000.0;
+            // Group by customer and date, then sum amounts
+            Map<String, Double> totalAmountOfEachCustomer = transactionsStream.stream()
+                .collect(Collectors.groupingBy(
+                        t -> t.getCustomerId() + " " + t.getTransactionDate(),
+                        Collectors.summingDouble(TransactionMonitor::getAmount)
+                ));
+
+            // Check if threshold exceeds
+            totalAmountOfEachCustomer.forEach((key, total) -> {
+                if (total > THRESHOLD) {
+                    System.out.println("Alert: Customer " + Arrays.stream(key.split(" ")).findFirst().orElse("") + " exceeded the threshold with " + total);
+                }
+            });
+
     }
 
     private static int computeExpensiveOperation(int value) {
