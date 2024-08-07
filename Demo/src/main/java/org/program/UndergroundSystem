@@ -1,0 +1,56 @@
+package org.program.competitiveCoding;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+public class UndergroundSystem {
+    static class Travel{
+        String stationName;
+        int time;
+
+        Travel(String stationName, int time) {
+            this.stationName = stationName;
+            this.time = time;
+        }
+    }
+    private Map<Integer, Travel> checkInMap;
+    private Map<String, int[]> travelData;
+
+    public UndergroundSystem() {
+        checkInMap = new HashMap<>();
+        travelData = new HashMap<>();
+    }
+    public static void main (String[] args) {
+        UndergroundSystem undergroundSystem = new UndergroundSystem();
+        undergroundSystem.checkIn(1, "Chinchwad", 3);
+        undergroundSystem.checkIn(2, "Pune", 8);
+        undergroundSystem.checkOut(1, "Indore", 15);
+        undergroundSystem.checkOut(2, "Kalyan", 22);
+        System.out.println(undergroundSystem.getAverageTime("Pune", "Kalyan"));
+        undergroundSystem.checkIn(3, "Chinchwad", 10);
+        undergroundSystem.checkOut(3, "Indore", 20);
+        System.out.println(undergroundSystem.getAverageTime("Chinchwad", "Indore"));
+    }
+
+    public void checkIn (int id, String stationName, int t) {
+        checkInMap.put(id, new Travel(stationName, t));
+    }
+
+    public void checkOut (int id, String stationName, int t) {
+        Travel checkInInfo = checkInMap.get(id);
+        String routeKey = checkInInfo.stationName +  "->" + stationName;
+        int travelTime = t - checkInInfo.time;
+
+        travelData.putIfAbsent(routeKey, new int[2]);
+        travelData.get(routeKey)[0] += travelTime;
+        travelData.get(routeKey)[1]++;
+
+        checkInMap.remove(id);
+    }
+
+    public double getAverageTime (String startStation, String endStation) {
+        String routeKey = startStation + "->" + endStation;
+        int[] totalTravelTimeAndCount = travelData.get(routeKey);
+        return (double) totalTravelTimeAndCount[0] / totalTravelTimeAndCount[1];
+    }
+}
